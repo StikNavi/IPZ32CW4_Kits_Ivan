@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -113,7 +115,11 @@ fun TaskDetailsScreen(navController: NavHostController, taskId: String) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Деталі завдання") })
+            TopAppBar(title = { Text(task.value.name) }, navigationIcon = {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                }
+            })
         },
         content = {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -121,10 +127,13 @@ fun TaskDetailsScreen(navController: NavHostController, taskId: String) {
                 Text(text = "Дата: ${task.value.date}")
                 Spacer(modifier = Modifier.height(16.dp))
                 if (task.value.status == TaskStatus.ACTIVE) {
-                    Button(onClick = {
-                        task.value.status = TaskStatus.COMPLETE
-                        navController.popBackStack()
-                    }) {
+                    Button(
+                        onClick = {
+                            task.value.status = TaskStatus.COMPLETE
+                            navController.popBackStack()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         Text("Done")
                     }
                 }
